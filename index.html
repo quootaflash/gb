@@ -2,398 +2,500 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV Kreatif</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CV Kreatif - Writehub Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
-        
-        .a4-paper {
-            width: 210mm;
-            min-height: 297mm;
-            background: white;
-            box-shadow: 0 25px 50px -12px rgb(15 23 42 / 0.15);
-            margin: 30px auto;
-            padding: 18mm 20mm;
-            font-family: 'Inter', system-ui, sans-serif;
-            font-size: 11.2pt;
-            line-height: 1.68;
-            color: #1f2937;
-            position: relative;
-            box-sizing: border-box;
-            overflow: visible;
+        /* --- GLOBAL & UI THEME --- */
+        :root {
+            --primary: #0f766e; /* Teal 700 */
+            --accent: #2dd4bf;  /* Teal 400 */
+            --bg-surface: #f1f5f9;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
         }
+        body.dark-mode {
+            --bg-surface: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --border: #334155;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+        .bg-dots {
+            position: fixed; inset: 0; z-index: -1; pointer-events: none;
+            background-image: radial-gradient(circle, #cbd5e1 1px, transparent 1px);
+            background-size: 24px 24px; opacity: 0.3;
+        }
+        .dark-mode .bg-dots { opacity: 0.1; background-image: radial-gradient(circle, #475569 1px, transparent 1px); }
+
+        /* Glassmorphism Card */
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Modern Inputs */
+        .fi {
+            width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+            border-radius: 10px; font-family: inherit; font-size: 13px;
+            color: var(--text-main); background: rgba(255,255,255,0.5);
+            transition: border-color .2s, box-shadow .2s; outline: none;
+        }
+        .dark-mode .fi { background: rgba(15,23,42,0.5); color: #e2e8f0; }
+        .fi:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15,118,110,.15); }
+        
+        /* Preview Area */
+        .preview-wrap {
+            background: #525659; /* Grey background for contrast */
+            border-radius: 12px;
+            padding: 30px;
+            overflow: auto;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        /* --- CREATIVE CV DESIGN (NON-ATS) --- */
+        .a4-cv-creative {
+            width: 210mm; min-height: 297mm; 
+            background: white;
+            position: relative;
+            display: grid;
+            grid-template-columns: 35% 65%; /* Sidebar Layout */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            color: #334155;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Sidebar Styling */
+        .cv-sidebar {
+            background: linear-gradient(180deg, #0f766e 0%, #0d9488 100%);
+            color: white;
+            padding: 30px 20px;
+            position: relative;
+        }
+        .cv-sidebar::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .cv-photo-container {
+            width: 140px; height: 140px; margin: 0 auto 30px auto;
+            border-radius: 50%; border: 4px solid rgba(255,255,255,0.3);
+            overflow: hidden; background: rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .cv-photo { width: 100%; height: 100%; object-fit: cover; }
+        
+        .cv-contact-item {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 15px; font-size: 0.85rem; line-height: 1.4;
+        }
+        .cv-contact-item i { width: 20px; text-align: center; opacity: 0.8; }
+
+        .cv-sidebar-section { margin-top: 40px; }
+        .cv-sidebar-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 20px; padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.3);
+        }
+
+        /* Skill Bars */
+        .skill-item { margin-bottom: 12px; }
+        .skill-name { font-size: 0.85rem; margin-bottom: 4px; display: block; }
+        .skill-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.2); border-radius: 4px; overflow: hidden; }
+        .skill-bar-fill { height: 100%; background: #2dd4bf; border-radius: 4px; }
+
+        /* Main Content Styling */
+        .cv-main { padding: 40px 30px; }
+        .cv-name { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 2.5rem; font-weight: 700; color: #0f766e; 
+            line-height: 1.1; margin-bottom: 5px;
+        }
+        .cv-role { font-size: 1.2rem; color: #64748b; font-weight: 500; margin-bottom: 25px; }
+        
+        .cv-section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem; font-weight: 700; color: #0f766e;
+            margin-bottom: 20px; padding-bottom: 10px;
+            border-bottom: 2px solid #ccfbf1;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .cv-section-title i { font-size: 1rem; color: #2dd4bf; }
+
+        .cv-item { margin-bottom: 20px; }
+        .cv-item-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+        .cv-item-title { font-weight: 700; font-size: 1rem; color: #1e293b; }
+        .cv-item-date { font-size: 0.85rem; color: #0f766e; font-weight: 600; text-transform: uppercase; }
+        .cv-item-sub { font-style: italic; color: #64748b; font-size: 0.9rem; margin-bottom: 8px; }
+        .cv-item-desc { font-size: 0.9rem; line-height: 1.6; color: #475569; }
+        .cv-item-desc ul { padding-left: 18px; margin: 5px 0; }
+        .cv-item-desc li { margin-bottom: 3px; }
 
         @media print {
             .no-print { display: none !important; }
-            .a4-paper {
-                width: 210mm !important;
-                min-height: 297mm !important;
-                margin: 0 !important;
-                padding: 18mm 20mm !important;
-                box-shadow: none !important;
-            }
+            body { background: white !important; }
+            .bg-dots, .preview-wrap { display: none !important; }
+            .a4-cv-creative { box-shadow: none; margin: 0; width: 100%; height: 100%; }
         }
         @page { size: A4 portrait; margin: 0; }
-
-        .section-title {
-            font-size: 14pt;
-            font-weight: 700;
-            color: #0f766e;
-            position: relative;
-            padding-bottom: 8px;
-            margin-bottom: 14px;
-        }
-        
-        .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(to right, #0f766e, #14b8a6);
-            border-radius: 9999px;
-        }
-
-        .name {
-            font-family: 'Playfair Display', serif;
-            font-size: 32pt;
-            font-weight: 700;
-            letter-spacing: -1px;
-            color: #0f766e;
-        }
-
-        .profile-photo {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border: 5px solid #f1f5f9;
-            box-shadow: 0 15px 30px -10px rgb(15 23 42 / 0.2);
-            border-radius: 9999px;
-            float: right;
-            margin-left: 25px;
-            margin-bottom: 12px;
-        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-teal-50 to-slate-50 font-sans">
+<body class="bg-[var(--bg-surface)] text-[var(--text-main)] min-h-screen transition-colors duration-300">
 
-    <!-- NAVBAR -->
-    <nav class="bg-slate-900 text-white sticky top-0 z-50 no-print shadow-xl">
-        <div class="max-w-screen-2xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-x-3">
-                <i class="fa-solid fa-palette text-3xl text-teal-400"></i>
-                <div>
-                    <h1 class="text-2xl font-semibold tracking-tight">CV KREATIF</h1>
-                    <p class="text-xs text-slate-400 -mt-0.5">Modern & Eye-Catching • v1.0</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-x-3 text-sm">
-                <button onclick="autoSaveDraft()" class="flex items-center gap-x-2 px-5 h-10 bg-white/10 hover:bg-white/20 rounded-2xl font-medium">
-                    <i class="fa-solid fa-floppy-disk"></i> <span class="hidden md:inline">Simpan Draft</span>
-                </button>
-                <button onclick="saveAsImage()" class="flex items-center gap-x-2 px-5 h-10 bg-violet-600 hover:bg-violet-700 text-white rounded-2xl font-medium">
-                    <i class="fa-solid fa-image"></i> PNG
-                </button>
-                <button onclick="generatePDF()" class="flex items-center gap-x-2 px-6 h-10 bg-teal-600 hover:bg-teal-700 text-white rounded-2xl font-medium">
-                    <i class="fa-solid fa-file-pdf"></i> PDF
-                </button>
-                <button onclick="printLetter()" class="flex items-center gap-x-2 px-6 h-10 bg-white text-slate-950 hover:bg-slate-100 rounded-2xl font-medium">
-                    <i class="fa-solid fa-print"></i> Cetak
-                </button>
-                <button onclick="clearForm()" class="flex items-center justify-center w-10 h-10 text-red-400 hover:text-red-500 rounded-2xl">
-                    <i class="fa-solid fa-trash text-xl"></i>
-                </button>
+<div class="bg-dots"></div>
+
+<!-- NAVBAR -->
+<nav class="sticky top-0 z-50 glass-card border-b border-[var(--border)] no-print">
+    <div class="max-w-[1600px] mx-auto px-4 md:px-6 py-3 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-lg bg-teal-500/15 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-palette text-teal-400 text-sm"></i></div>
+            <div class="min-w-0">
+                <h1 class="text-[15px] font-bold tracking-tight truncate">CV Kreatif</h1>
+                <p class="text-[8px] text-[var(--text-muted)] -mt-0.5 tracking-widest uppercase">Modern Non-ATS Design</p>
             </div>
         </div>
-    </nav>
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button id="btnDark" class="flex items-center justify-center w-8 h-8 bg-[var(--border)]/50 hover:bg-[var(--border)] rounded-lg transition text-[var(--text-main)]"><i class="fa-solid fa-moon text-xs"></i></button>
+            <button onclick="saveDraft()" class="hide-sm flex items-center gap-1.5 px-3 h-8 bg-[var(--border)]/50 hover:bg-[var(--border)] rounded-lg text-[10.5px] font-medium transition"><i class="fa-solid fa-floppy-disk"></i>Simpan</button>
+            <button onclick="saveAsImage()" class="flex items-center gap-1.5 px-3.5 h-8 bg-violet-600 hover:bg-violet-700 rounded-lg text-[10.5px] font-semibold transition text-white"><i class="fa-solid fa-image"></i><span class="hide-sm">PNG</span></button>
+            <button onclick="printCV()" class="flex items-center gap-1.5 px-3.5 h-8 bg-teal-600 hover:bg-teal-700 rounded-lg text-[10.5px] font-semibold transition text-white"><i class="fa-solid fa-file-pdf"></i><span class="hide-sm">PDF</span></button>
+        </div>
+    </div>
+</nav>
 
-    <div class="max-w-screen-2xl mx-auto px-6 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
-            <!-- FORM INPUT -->
-            <div class="lg:col-span-5 bg-white rounded-3xl shadow-2xl p-8 no-print overflow-auto max-h-screen">
-                <div class="mb-8">
-                    <h2 class="text-2xl font-semibold text-teal-700">CV Kreatif Modern</h2>
-                    <p class="text-teal-600 text-sm mt-1">Desain Fresh & Profesional</p>
+<div class="max-w-[1600px] mx-auto px-4 md:px-6 py-5">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- FORM EDITOR (LEFT) -->
+        <div class="lg:col-span-5 no-print">
+            <div class="glass-card rounded-2xl p-6 max-h-[calc(100vh-140px)] overflow-y-auto custom-scroll">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-bold text-[var(--text-main)]">Editor Konten</h2>
+                    <span class="text-[10px] bg-teal-100 text-teal-700 px-2 py-1 rounded">Kreatif Mode</span>
                 </div>
-                
-                <div class="space-y-10">
+
+                <div class="space-y-6">
                     <!-- Foto -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-2">Foto Profil (Lingkaran)</label>
-                        <input type="file" id="foto-upload" accept="image/*" class="hidden" onchange="previewFoto(this)">
-                        <button onclick="document.getElementById('foto-upload').click()" 
-                                class="w-full h-36 border-2 border-dashed border-teal-300 hover:border-teal-500 rounded-3xl flex flex-col items-center justify-center text-slate-500">
-                            <i class="fa-solid fa-user-circle text-5xl mb-3"></i>
-                            <span class="text-sm font-medium">Upload Foto</span>
-                        </button>
-                        <img id="foto-preview" class="hidden mx-auto mt-4 rounded-2xl shadow-md" style="width:110px; height:110px; object-fit:cover;">
-                    </div>
-
-                    <!-- Data Diri -->
-                    <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Data Diri</h3>
-                        <input id="nama" type="text" value="Muhammad Hafis" placeholder="Nama Lengkap" 
-                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none mb-4" oninput="updatePreview()">
-                        
-                        <div class="grid grid-cols-2 gap-4">
-                            <input id="telepon" type="tel" value="0856-1234-5678" placeholder="No. Telepon" 
-                                   class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()">
-                            <input id="email" type="email" value="hafis@example.com" placeholder="Email" 
-                                   class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()">
+                        <label class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-2 block">Foto Profil</label>
+                        <div class="flex gap-3">
+                            <input type="file" id="foto-upload" accept="image/*" class="hidden" onchange="previewFoto(this)">
+                            <button onclick="document.getElementById('foto-upload').click()" class="flex-1 py-3 border-2 border-dashed border-[var(--border)] rounded-xl text-[var(--text-muted)] hover:border-teal-500 text-sm transition">
+                                <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload
+                            </button>
                         </div>
-                        <input id="alamat" type="text" value="Paninggaran, Pekalongan, Jawa Tengah" placeholder="Domisili" 
-                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none mt-4" oninput="updatePreview()">
-                        <input id="linkedin" type="text" value="linkedin.com/in/hafis" placeholder="LinkedIn / Portfolio" 
-                               class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none mt-3" oninput="updatePreview()">
                     </div>
 
-                    <!-- Ringkasan -->
+                    <!-- Identitas -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Ringkasan Profesional</h3>
-                        <textarea id="ringkasan" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" 
-                                  oninput="updatePreview()">Fresh Graduate Teknik Jaringan Komputer & Telekomunikasi yang kreatif dan teknis. Passionate dalam IT Support, desain web, dan troubleshooting. Siap berkontribusi dengan ide segar dan solusi inovatif.</textarea>
+                        <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-3 border-b border-[var(--border)] pb-1">Identitas Utama</h3>
+                        <div class="grid gap-3">
+                            <input id="nama" class="fi" placeholder="Nama Lengkap" value="Muhammad Hafis">
+                            <input id="role" class="fi" placeholder="Target Posisi / Gelar" value="Junior Web Developer">
+                            <input id="email" class="fi" placeholder="Email" value="hafis@example.com">
+                            <input id="phone" class="fi" placeholder="No. Telepon" value="0856-1234-5678">
+                            <input id="address" class="fi" placeholder="Kota, Negara" value="Pekalongan, Indonesia">
+                            <input id="web" class="fi" placeholder="Website / Portofolio" value="www.hafis-portfolio.com">
+                        </div>
                     </div>
 
-                    <!-- Pengalaman Kerja -->
+                    <!-- Profil -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Kerja</h3>
-                        <div id="pengalaman-container" class="space-y-4"></div>
-                        <button onclick="tambahPengalaman()" class="mt-3 flex items-center gap-2 text-teal-600 hover:text-teal-700 text-sm font-medium">
-                            <i class="fa-solid fa-plus"></i> Tambah Pengalaman
-                        </button>
+                        <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-3 border-b border-[var(--border)] pb-1">Profil Singkat</h3>
+                        <textarea id="profil" class="fi" rows="4">Desainer Web dan Frontend Developer yang kreatif dengan passion dalam menciptakan antarmuka pengguna yang estetis dan fungsional. Lulusan baru yang bersemangat belajar teknologi web modern (React, Tailwind) dan memiliki mata yang tajam untuk detail desain.</textarea>
                     </div>
 
-                    <!-- Pengalaman Magang -->
+                    <!-- Pengalaman -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pengalaman Magang</h3>
-                        <div id="magang-container" class="space-y-4"></div>
-                        <button onclick="tambahMagang()" class="mt-3 flex items-center gap-2 text-teal-600 hover:text-teal-700 text-sm font-medium">
-                            <i class="fa-solid fa-plus"></i> Tambah Magang
-                        </button>
+                        <div class="flex justify-between items-end mb-3 border-b border-[var(--border)] pb-1">
+                            <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Pengalaman Kerja</h3>
+                            <button onclick="addItem('exp')" class="text-xs text-teal-600 hover:text-teal-700 font-bold">+ Tambah</button>
+                        </div>
+                        <div id="exp-container" class="space-y-4"></div>
                     </div>
 
                     <!-- Pendidikan -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-3">Pendidikan</h3>
-                        <div id="pendidikan-container" class="space-y-4"></div>
-                        <button onclick="tambahPendidikan()" class="mt-3 flex items-center gap-2 text-teal-600 hover:text-teal-700 text-sm font-medium">
-                            <i class="fa-solid fa-plus"></i> Tambah Pendidikan
-                        </button>
+                        <div class="flex justify-between items-end mb-3 border-b border-[var(--border)] pb-1">
+                            <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider">Pendidikan</h3>
+                            <button onclick="addItem('edu')" class="text-xs text-teal-600 hover:text-teal-700 font-bold">+ Tambah</button>
+                        </div>
+                        <div id="edu-container" class="space-y-4"></div>
                     </div>
 
-                    <!-- Keterampilan -->
+                    <!-- Skills -->
                     <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Keterampilan</h3>
-                        <textarea id="keterampilan" rows="6" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" 
-                                  oninput="updatePreview()">• Microsoft Office & Google Workspace
-• HTML, CSS, Tailwind CSS, JavaScript
-• Network Administration & Troubleshooting
-• UI/UX Design Basics (Figma)
-• Adobe Photoshop & Illustrator
-• Bahasa Inggris (Intermediate)</textarea>
-                    </div>
-
-                    <!-- Proyek & Sertifikasi -->
-                    <div>
-                        <h3 class="uppercase text-xs tracking-widest font-medium text-slate-500 mb-4">Proyek & Sertifikasi</h3>
-                        <textarea id="sertifikasi" rows="4" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" 
-                                  oninput="updatePreview()">• Sistem Monitoring Jaringan Sekolah (Web-based)
-• Cisco Networking Academy Certificate
-• Proyek Desain Website Sekolah</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PREVIEW -->
-            <div class="lg:col-span-7">
-                <div class="preview-header flex justify-between items-center mb-4 px-2 no-print">
-                    <h3 class="font-semibold text-teal-700 flex items-center gap-x-2">
-                        <i class="fa-solid fa-eye"></i> Pratinjau CV Kreatif
-                    </h3>
-                    <span class="text-xs bg-teal-100 text-teal-700 px-4 py-1.5 rounded-3xl">FORMAT A4</span>
-                </div>
-                
-                <div class="preview-wrapper bg-white p-6 rounded-3xl shadow-inner overflow-x-auto">
-                    <div id="cv" class="a4-paper mx-auto">
-                        <div id="cv-content"></div>
+                        <h3 class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider mb-3 border-b border-[var(--border)] pb-1">Keahlian (Skill)</h3>
+                        <p class="text-[10px] text-[var(--text-muted)] mb-2">Gunakan format: <strong>Nama Skill</strong> (Persentase)</p>
+                        <textarea id="skills" class="fi" rows="5">HTML5 & CSS3 (90%)
+JavaScript (75%)
+Tailwind CSS (85%)
+UI/UX Design (80%)
+Adobe Photoshop (70%)
+Public Speaking (60%)</textarea>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        let cvData = { foto: null };
+        <!-- PREVIEW AREA (RIGHT) -->
+        <div class="lg:col-span-7">
+            <div class="preview-wrap sticky top-[70px]">
+                <!-- KERTAS A4 KREATIF -->
+                <div id="cv-doc" class="a4-cv-creative">
+                    
+                    <!-- SIDEBAR KIRI -->
+                    <div class="cv-sidebar">
+                        <div class="cv-photo-container">
+                            <img id="cv-foto" src="" class="cv-photo hidden">
+                            <i id="cv-foto-placeholder" class="fa-solid fa-user text-6xl absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/30"></i>
+                        </div>
 
-        function tambahPengalaman() {
-            const container = document.getElementById('pengalaman-container');
-            const index = container.children.length;
-            const div = document.createElement('div');
-            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
-            div.innerHTML = `
-                <input type="text" id="exp-posisi-${index}" placeholder="Posisi / Jabatan" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="exp-perusahaan-${index}" placeholder="Nama Perusahaan" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="exp-periode-${index}" placeholder="Periode" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()">
-                <textarea id="exp-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()"></textarea>
-            `;
-            container.appendChild(div);
-            updatePreview();
-        }
+                        <div class="text-center mb-8">
+                            <h2 class="text-xl font-bold font-['Playfair_Display']">Kontak</h2>
+                        </div>
 
-        function tambahMagang() {
-            const container = document.getElementById('magang-container');
-            const index = container.children.length;
-            const div = document.createElement('div');
-            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
-            div.innerHTML = `
-                <input type="text" id="mag-posisi-${index}" placeholder="Posisi Magang" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="mag-perusahaan-${index}" placeholder="Perusahaan / Instansi" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="mag-periode-${index}" placeholder="Periode" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()">
-                <textarea id="mag-deskripsi-${index}" rows="3" placeholder="Deskripsi tugas & pencapaian" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()"></textarea>
-            `;
-            container.appendChild(div);
-            updatePreview();
-        }
+                        <div class="mb-8">
+                            <div class="cv-contact-item"><i class="fa-solid fa-phone"></i> <span id="cv-phone">0856-1234-5678</span></div>
+                            <div class="cv-contact-item"><i class="fa-solid fa-envelope"></i> <span id="cv-email">hafis@example.com</span></div>
+                            <div class="cv-contact-item"><i class="fa-solid fa-location-dot"></i> <span id="cv-address">Pekalongan</span></div>
+                            <div class="cv-contact-item"><i class="fa-solid fa-globe"></i> <span id="cv-web">www.hafis-portfolio.com</span></div>
+                        </div>
 
-        function tambahPendidikan() {
-            const container = document.getElementById('pendidikan-container');
-            const index = container.children.length;
-            const div = document.createElement('div');
-            div.className = "border border-slate-100 p-5 rounded-2xl space-y-3";
-            div.innerHTML = `
-                <input type="text" id="pend-nama-${index}" placeholder="Sekolah / Universitas & Jurusan" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()">
-                <input type="text" id="pend-tahun-${index}" placeholder="Tahun (contoh: 2023 - 2026)" class="w-full px-5 py-4 border border-slate-200 rounded-3xl focus:border-teal-500 outline-none" oninput="updatePreview()">
-            `;
-            container.appendChild(div);
-            updatePreview();
-        }
+                        <div class="cv-sidebar-section">
+                            <h3 class="cv-sidebar-title">Keahlian</h3>
+                            <div id="cv-skills-list">
+                                <!-- Skill Bars Injected Here -->
+                            </div>
+                        </div>
 
-        function previewFoto(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    cvData.foto = e.target.result;
-                    document.getElementById('foto-preview').src = cvData.foto;
-                    document.getElementById('foto-preview').classList.remove('hidden');
-                    updatePreview();
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function updatePreview() {
-            const nama = document.getElementById('nama').value || "Nama Lengkap";
-            const telepon = document.getElementById('telepon').value;
-            const email = document.getElementById('email').value;
-            const alamat = document.getElementById('alamat').value;
-            const linkedin = document.getElementById('linkedin').value;
-            const ringkasan = document.getElementById('ringkasan').value;
-            const keterampilan = document.getElementById('keterampilan').value;
-            const sertifikasi = document.getElementById('sertifikasi').value;
-
-            const fotoHTML = cvData.foto 
-                ? `<img src="${cvData.foto}" class="profile-photo" alt="Foto Profil">` 
-                : `<div class="w-[110px] h-[110px] float-right ml-6 mb-4 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 border-4 border-slate-200"><i class="fa-solid fa-user text-6xl"></i></div>`;
-
-            // Pengalaman Kerja
-            let expHTML = '';
-            document.querySelectorAll('#pengalaman-container > div').forEach((child, i) => {
-                const posisi = child.querySelector(`#exp-posisi-${i}`)?.value.trim() || '';
-                const perusahaan = child.querySelector(`#exp-perusahaan-${i}`)?.value.trim() || '';
-                const periode = child.querySelector(`#exp-periode-${i}`)?.value.trim() || '';
-                const deskripsi = child.querySelector(`#exp-deskripsi-${i}`)?.value.trim() || '';
-                if (posisi || perusahaan) {
-                    expHTML += `<div class="mb-8"><p class="font-semibold text-lg">${posisi} — ${perusahaan}</p><p class="text-teal-600 text-sm">${periode}</p><div class="mt-3 text-slate-700 whitespace-pre-line">${deskripsi.replace(/\n/g, '<br>')}</div></div>`;
-                }
-            });
-
-            // Pengalaman Magang
-            let magangHTML = '';
-            document.querySelectorAll('#magang-container > div').forEach((child, i) => {
-                const posisi = child.querySelector(`#mag-posisi-${i}`)?.value.trim() || '';
-                const perusahaan = child.querySelector(`#mag-perusahaan-${i}`)?.value.trim() || '';
-                const periode = child.querySelector(`#mag-periode-${i}`)?.value.trim() || '';
-                const deskripsi = child.querySelector(`#mag-deskripsi-${i}`)?.value.trim() || '';
-                if (posisi || perusahaan) {
-                    magangHTML += `<div class="mb-8"><p class="font-semibold">${posisi} — ${perusahaan}</p><p class="text-teal-600 text-sm">${periode}</p><div class="mt-3 text-slate-700 whitespace-pre-line">${deskripsi.replace(/\n/g, '<br>')}</div></div>`;
-                }
-            });
-
-            // Pendidikan
-            let pendHTML = '';
-            document.querySelectorAll('#pendidikan-container > div').forEach((child, i) => {
-                const nama = child.querySelector(`#pend-nama-${i}`)?.value.trim() || '';
-                const tahun = child.querySelector(`#pend-tahun-${i}`)?.value.trim() || '';
-                if (nama) pendHTML += `<div class="mb-6"><p class="font-semibold">${nama}</p><p class="text-slate-600">${tahun}</p></div>`;
-            });
-
-            const contentHTML = `
-                <div class="overflow-hidden">
-                    ${fotoHTML}
-                    <h1 class="name">${nama}</h1>
-                    <div class="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm text-slate-600">
-                        <span>${telepon}</span>
-                        <span>${email}</span>
-                        <span>${alamat}</span>
-                        ${linkedin ? `<span>${linkedin}</span>` : ''}
+                        <div class="cv-sidebar-section">
+                            <h3 class="cv-sidebar-title">Bahasa</h3>
+                            <div class="text-sm space-y-2">
+                                <div>Indonesia (Native)</div>
+                                <div>Inggris (Professional Working)</div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- MAIN CONTENT KANAN -->
+                    <div class="cv-main">
+                        <div>
+                            <h1 class="cv-name" id="cv-nama">Muhammad Hafis</h1>
+                            <p class="cv-role" id="cv-role">Junior Web Developer</p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="cv-section-title"><i class="fa-solid fa-user"></i> Tentang Saya</h3>
+                            <p class="cv-item-desc" id="cv-profil">Desainer Web dan Frontend Developer yang kreatif...</p>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="cv-section-title"><i class="fa-solid fa-briefcase"></i> Pengalaman</h3>
+                            <div id="cv-exp-list"></div>
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="cv-section-title"><i class="fa-solid fa-graduation-cap"></i> Pendidikan</h3>
+                            <div id="cv-edu-list"></div>
+                        </div>
+                    </div>
+
                 </div>
+            </div>
+        </div>
 
-                ${ringkasan ? `<div class="mt-12"><h2 class="section-title">TENTANG SAYA</h2><p class="text-slate-700 leading-relaxed">${ringkasan}</p></div>` : ''}
+    </div>
+</div>
 
-                ${expHTML ? `<div class="mt-12"><h2 class="section-title">PENGALAMAN KERJA</h2>${expHTML}</div>` : ''}
+<script>
+    // --- DATA MANAGEMENT ---
+    let cvData = { foto: null };
 
-                ${magangHTML ? `<div class="mt-12"><h2 class="section-title">PENGALAMAN MAGANG</h2>${magangHTML}</div>` : ''}
-
-                <div class="mt-12"><h2 class="section-title">PENDIDIKAN</h2><div class="mt-5">${pendHTML || '<p class="text-slate-500">Tambahkan pendidikan Anda</p>'}</div></div>
-
-                <div class="mt-12"><h2 class="section-title">KETERAMPILAN</h2><div class="text-slate-700 whitespace-pre-line leading-relaxed mt-5">${keterampilan.replace(/\n/g, '<br>')}</div></div>
-
-                ${sertifikasi ? `<div class="mt-12"><h2 class="section-title">PROYEK & SERTIFIKASI</h2><div class="text-slate-700 whitespace-pre-line leading-relaxed mt-5">${sertifikasi.replace(/\n/g, '<br>')}</div></div>` : ''}
+    // --- INPUT GENERATORS ---
+    function addItem(type) {
+        const container = document.getElementById(type + '-container');
+        const idx = container.children.length;
+        const div = document.createElement('div');
+        div.className = 'p-3 bg-[var(--bg-surface)] rounded-xl border border-[var(--border)] space-y-2';
+        
+        if(type === 'exp') {
+            div.innerHTML = `
+                <input type="text" id="exp-role-${idx}" class="fi bg-transparent" placeholder="Jabatan" oninput="renderCV()">
+                <input type="text" id="exp-company-${idx}" class="fi bg-transparent" placeholder="Perusahaan" oninput="renderCV()">
+                <input type="text" id="exp-date-${idx}" class="fi bg-transparent" placeholder="Periode (ex: Jan 2023 - Sekarang)" oninput="renderCV()">
+                <textarea id="exp-desc-${idx}" class="fi bg-transparent" rows="2" placeholder="Deskripsi tugas..." oninput="renderCV()"></textarea>
             `;
+        } else {
+            div.innerHTML = `
+                <input type="text" id="edu-school-${idx}" class="fi bg-transparent" placeholder="Nama Sekolah / Kampus" oninput="renderCV()">
+                <input type="text" id="edu-degree-${idx}" class="fi bg-transparent" placeholder="Jurusan / Gelar" oninput="renderCV()">
+                <input type="text" id="edu-year-${idx}" class="fi bg-transparent" placeholder="Tahun Lulus" oninput="renderCV()">
+            `;
+        }
+        container.appendChild(div);
+    }
 
-            document.getElementById('cv-content').innerHTML = contentHTML;
+    // --- PHOTO HANDLER ---
+    function previewFoto(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                cvData.foto = e.target.result;
+                renderCV();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // --- RENDER ENGINE ---
+    function renderCV() {
+        // Identity
+        document.getElementById('cv-nama').textContent = v('nama') || 'Nama Anda';
+        document.getElementById('cv-role').textContent = v('role') || 'Jabatan';
+        document.getElementById('cv-email').textContent = v('email');
+        document.getElementById('cv-phone').textContent = v('phone');
+        document.getElementById('cv-address').textContent = v('address');
+        document.getElementById('cv-web').textContent = v('web');
+        document.getElementById('cv-profil').textContent = v('profil');
+
+        // Photo
+        if(cvData.foto) {
+            const img = document.getElementById('cv-foto');
+            img.src = cvData.foto;
+            img.classList.remove('hidden');
+            document.getElementById('cv-foto-placeholder').classList.add('hidden');
         }
 
-        function printLetter() { updatePreview(); window.print(); }
-        function generatePDF() {
-            if (confirm('Simpan sebagai PDF?')) printLetter();
-        }
-        function saveAsImage() {
-            const cv = document.getElementById('cv');
-            html2canvas(cv, { scale: 3, backgroundColor: '#ffffff' }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `CV_Kreatif_${document.getElementById('nama').value.replace(/[^a-zA-Z0-9]/g, '_')}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
+        // Skills (Parse Percentage)
+        const skillText = v('skills');
+        const skillContainer = document.getElementById('cv-skills-list');
+        skillContainer.innerHTML = '';
+        if(skillText) {
+            skillText.split('\n').forEach(line => {
+                const parts = line.split('(');
+                if(parts.length >= 1) {
+                    const name = parts[0].trim();
+                    let pct = '70%'; // default
+                    if(parts.length > 1) {
+                        const match = parts[1].match(/(\d+)/);
+                        if(match) pct = match[0] + '%';
+                    }
+                    const div = document.createElement('div');
+                    div.className = 'skill-item';
+                    div.innerHTML = `
+                        <span class="skill-name">${name}</span>
+                        <div class="skill-bar-bg">
+                            <div class="skill-bar-fill" style="width: ${pct}"></div>
+                        </div>
+                    `;
+                    skillContainer.appendChild(div);
+                }
             });
         }
-        function autoSaveDraft() { alert('Draft CV berhasil disimpan!'); }
-        function clearForm() { if (confirm('Reset semua data?')) location.reload(); }
 
-        // Inisialisasi
-        window.onload = () => {
-            tambahPendidikan();
-            document.getElementById('pend-nama-0').value = "SMK Nurul Ummah Paninggaran - Teknik Jaringan Komputer dan Telekomunikasi";
-            document.getElementById('pend-tahun-0').value = "2023 - 2026";
+        // Experience
+        const expContainer = document.getElementById('cv-exp-list');
+        expContainer.innerHTML = '';
+        document.querySelectorAll('#exp-container > div').forEach((child, i) => {
+            const role = child.querySelector(`#exp-role-${i}`)?.value;
+            const comp = child.querySelector(`#exp-company-${i}`)?.value;
+            const date = child.querySelector(`#exp-date-${i}`)?.value;
+            const desc = child.querySelector(`#exp-desc-${i}`)?.value;
+            if(role) {
+                const div = document.createElement('div');
+                div.className = 'cv-item';
+                div.innerHTML = `
+                    <div class="cv-item-header">
+                        <span class="cv-item-title">${role}</span>
+                        <span class="cv-item-date">${date}</span>
+                    </div>
+                    <div class="cv-item-sub">${comp}</div>
+                    <div class="cv-item-desc">${desc}</div>
+                `;
+                expContainer.appendChild(div);
+            }
+        });
 
-            tambahPengalaman();
-            document.getElementById('exp-posisi-0').value = "IT Support & Web Developer";
-            document.getElementById('exp-perusahaan-0').value = "PT. ABC Digital";
-            document.getElementById('exp-periode-0').value = "Januari - Maret 2025";
-            document.getElementById('exp-deskripsi-0').value = "• Maintenance jaringan dan troubleshooting\n• Pembuatan website sekolah menggunakan Tailwind CSS";
+        // Education
+        const eduContainer = document.getElementById('cv-edu-list');
+        eduContainer.innerHTML = '';
+        document.querySelectorAll('#edu-container > div').forEach((child, i) => {
+            const school = child.querySelector(`#edu-school-${i}`)?.value;
+            const degree = child.querySelector(`#edu-degree-${i}`)?.value;
+            const year = child.querySelector(`#edu-year-${i}`)?.value;
+            if(school) {
+                const div = document.createElement('div');
+                div.className = 'cv-item';
+                div.innerHTML = `
+                    <div class="cv-item-header">
+                        <span class="cv-item-title">${school}</span>
+                        <span class="cv-item-date">${year}</span>
+                    </div>
+                    <div class="cv-item-sub">${degree}</div>
+                `;
+                eduContainer.appendChild(div);
+            }
+        });
+    }
 
-            tambahMagang();
+    function v(id) { return document.getElementById(id).value; }
 
-            updatePreview();
-        };
-    </script>
+    // --- ACTIONS ---
+    function saveDraft() { alert('Draft CV Kreatif berhasil disimpan ke browser!'); }
+    function printCV() { renderCV(); window.print(); }
+    
+    function saveAsImage() {
+        const element = document.getElementById('cv-doc');
+        html2canvas(element, { scale: 3, useCORS: true }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `CV_Kreatif_${v('nama').replace(/\s+/g,'_')}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+    }
+
+    // --- DARK MODE ---
+    document.getElementById('btnDark').addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        const btn = document.getElementById('btnDark');
+        btn.innerHTML = isDark ? '<i class="fa-solid fa-sun text-xs"></i>' : '<i class="fa-solid fa-moon text-xs"></i>';
+    });
+
+    // --- INITIALIZATION ---
+    window.onload = () => {
+        // Add default items
+        addItem('exp');
+        const exp0 = document.querySelector('#exp-role-0');
+        if(exp0) {
+            exp0.value = "Frontend Developer Intern";
+            document.querySelector('#exp-company-0').value = "Tech Studio Indonesia";
+            document.querySelector('#exp-date-0').value = "Jan 2024 - Apr 2024";
+            document.querySelector('#exp-desc-0').value = "Mengembangkan landing page menggunakan HTML & Tailwind CSS. Kolaborasi dengan tim desain UI/UX.";
+        }
+
+        addItem('edu');
+        const edu0 = document.querySelector('#edu-school-0');
+        if(edu0) {
+            edu0.value = "Universitas Teknologi Digital";
+            document.querySelector('#edu-degree-0').value = "S1 Teknik Informatika";
+            document.querySelector('#edu-year-0').value = "2020 - 2024";
+        }
+
+        renderCV();
+    };
+</script>
 </body>
 </html>
